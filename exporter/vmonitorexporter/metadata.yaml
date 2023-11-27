@@ -1,0 +1,9 @@
+type: vmonitor
+
+status:
+  class: exporter
+  stability:
+    beta: [metrics]
+  distributions: [contrib, observiq]
+  codeowners:
+    active: [annd2]

@@ -4,13 +4,23 @@
 package main
 
 import (
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
+	"net/http"
+
+	// "fmt"
+	// "net/http"
+	// _ "net/http/pprof"
 
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/otelcol"
 )
 
 func main() {
+	go func() {
+        http.Handle("/metrics", promhttp.Handler())
+        http.ListenAndServe(":2112", nil)
+    }()
 	factories, err := components()
 	if err != nil {
 		log.Fatalf("failed to build components: %v", err)

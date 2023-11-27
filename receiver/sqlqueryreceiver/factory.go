@@ -15,7 +15,6 @@ func NewFactory() receiver.Factory {
 	return receiver.NewFactory(
 		metadata.Type,
 		createDefaultConfig,
-		receiver.WithLogs(createLogsReceiverFunc(sql.Open, newDbClient), metadata.LogsStability),
-		receiver.WithMetrics(createMetricsReceiverFunc(sql.Open, newDbClient), metadata.MetricsStability),
+		receiver.WithLogs(createLogsReceiverFunc(sql.Open), metadata.LogsStability),
 	)
 }

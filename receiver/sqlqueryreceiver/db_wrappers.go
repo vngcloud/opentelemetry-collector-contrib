@@ -4,33 +4,20 @@
 package sqlqueryreceiver // import "github.com/open-telemetry/opentelemetry-collector-contrib/receiver/sqlqueryreceiver"
 
 import (
-	"context"
 	"database/sql"
 )
 
 // These are wrappers and interfaces around sql.DB so that it can be swapped out for testing.
 
-type db interface {
-	QueryContext(ctx context.Context, query string, args ...any) (rows, error)
-}
-
 type rows interface {
 	ColumnTypes() ([]colType, error)
 	Next() bool
 	Scan(dest ...any) error
+	Close()
 }
 
 type colType interface {
 	Name() string
-}
-
-type dbWrapper struct {
-	db *sql.DB
-}
-
-func (d dbWrapper) QueryContext(ctx context.Context, query string, args ...any) (rows, error) {
-	rows, err := d.db.QueryContext(ctx, query, args...)
-	return rowsWrapper{rows}, err
 }
 
 type rowsWrapper struct {
@@ -55,6 +42,12 @@ func (r rowsWrapper) Next() bool {
 
 func (r rowsWrapper) Scan(dest ...any) error {
 	return r.rows.Scan(dest...)
+}
+
+func (r rowsWrapper) Close() {
+	if r.rows != nil {
+		r.rows.Close()
+	}
 }
 
 type colWrapper struct {

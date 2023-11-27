@@ -30,7 +30,7 @@ type mySQLScraper struct {
 	mb        *metadata.MetricsBuilder
 
 	// Feature gates regarding resource attributes
-	renameCommands bool
+	// renameCommands bool
 }
 
 func newMySQLScraper(
@@ -88,8 +88,8 @@ func (m *mySQLScraper) scrape(context.Context) (pmetric.Metrics, error) {
 	}
 
 	// collect io_waits metrics.
-	m.scrapeTableIoWaitsStats(now, errs)
-	m.scrapeIndexIoWaitsStats(now, errs)
+	// m.scrapeTableIoWaitsStats(now, errs)
+	// m.scrapeIndexIoWaitsStats(now, errs)
 
 	// collect performance event statements metrics.
 	m.scrapeStatementEventsStats(now, errs)
@@ -408,69 +408,69 @@ func (m *mySQLScraper) scrapeGlobalStats(now pcommon.Timestamp, errs *scrapererr
 	}
 }
 
-func (m *mySQLScraper) scrapeTableIoWaitsStats(now pcommon.Timestamp, errs *scrapererror.ScrapeErrors) {
-	tableIoWaitsStats, err := m.sqlclient.getTableIoWaitsStats()
-	if err != nil {
-		m.logger.Error("Failed to fetch table io_waits stats", zap.Error(err))
-		errs.AddPartial(8, err)
-		return
-	}
+// func (m *mySQLScraper) scrapeTableIoWaitsStats(now pcommon.Timestamp, errs *scrapererror.ScrapeErrors) {
+// 	tableIoWaitsStats, err := m.sqlclient.getTableIoWaitsStats()
+// 	if err != nil {
+// 		m.logger.Error("Failed to fetch table io_waits stats", zap.Error(err))
+// 		errs.AddPartial(8, err)
+// 		return
+// 	}
 
-	for i := 0; i < len(tableIoWaitsStats); i++ {
-		s := tableIoWaitsStats[i]
-		// counts
-		m.mb.RecordMysqlTableIoWaitCountDataPoint(now, s.countDelete, metadata.AttributeIoWaitsOperationsDelete, s.name, s.schema)
-		m.mb.RecordMysqlTableIoWaitCountDataPoint(now, s.countFetch, metadata.AttributeIoWaitsOperationsFetch, s.name, s.schema)
-		m.mb.RecordMysqlTableIoWaitCountDataPoint(now, s.countInsert, metadata.AttributeIoWaitsOperationsInsert, s.name, s.schema)
-		m.mb.RecordMysqlTableIoWaitCountDataPoint(now, s.countUpdate, metadata.AttributeIoWaitsOperationsUpdate, s.name, s.schema)
+// 	for i := 0; i < len(tableIoWaitsStats); i++ {
+// 		s := tableIoWaitsStats[i]
+// 		// counts
+// 		m.mb.RecordMysqlTableIoWaitCountDataPoint(now, s.countDelete, metadata.AttributeIoWaitsOperationsDelete, s.name, s.schema)
+// 		m.mb.RecordMysqlTableIoWaitCountDataPoint(now, s.countFetch, metadata.AttributeIoWaitsOperationsFetch, s.name, s.schema)
+// 		m.mb.RecordMysqlTableIoWaitCountDataPoint(now, s.countInsert, metadata.AttributeIoWaitsOperationsInsert, s.name, s.schema)
+// 		m.mb.RecordMysqlTableIoWaitCountDataPoint(now, s.countUpdate, metadata.AttributeIoWaitsOperationsUpdate, s.name, s.schema)
 
-		// times
-		m.mb.RecordMysqlTableIoWaitTimeDataPoint(
-			now, s.timeDelete/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsDelete, s.name, s.schema,
-		)
-		m.mb.RecordMysqlTableIoWaitTimeDataPoint(
-			now, s.timeFetch/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsFetch, s.name, s.schema,
-		)
-		m.mb.RecordMysqlTableIoWaitTimeDataPoint(
-			now, s.timeInsert/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsInsert, s.name, s.schema,
-		)
-		m.mb.RecordMysqlTableIoWaitTimeDataPoint(
-			now, s.timeUpdate/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsUpdate, s.name, s.schema,
-		)
-	}
-}
+// 		// times
+// 		m.mb.RecordMysqlTableIoWaitTimeDataPoint(
+// 			now, s.timeDelete/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsDelete, s.name, s.schema,
+// 		)
+// 		m.mb.RecordMysqlTableIoWaitTimeDataPoint(
+// 			now, s.timeFetch/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsFetch, s.name, s.schema,
+// 		)
+// 		m.mb.RecordMysqlTableIoWaitTimeDataPoint(
+// 			now, s.timeInsert/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsInsert, s.name, s.schema,
+// 		)
+// 		m.mb.RecordMysqlTableIoWaitTimeDataPoint(
+// 			now, s.timeUpdate/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsUpdate, s.name, s.schema,
+// 		)
+// 	}
+// }
 
-func (m *mySQLScraper) scrapeIndexIoWaitsStats(now pcommon.Timestamp, errs *scrapererror.ScrapeErrors) {
-	indexIoWaitsStats, err := m.sqlclient.getIndexIoWaitsStats()
-	if err != nil {
-		m.logger.Error("Failed to fetch index io_waits stats", zap.Error(err))
-		errs.AddPartial(8, err)
-		return
-	}
+// func (m *mySQLScraper) scrapeIndexIoWaitsStats(now pcommon.Timestamp, errs *scrapererror.ScrapeErrors) {
+// 	indexIoWaitsStats, err := m.sqlclient.getIndexIoWaitsStats()
+// 	if err != nil {
+// 		m.logger.Error("Failed to fetch index io_waits stats", zap.Error(err))
+// 		errs.AddPartial(8, err)
+// 		return
+// 	}
 
-	for i := 0; i < len(indexIoWaitsStats); i++ {
-		s := indexIoWaitsStats[i]
-		// counts
-		m.mb.RecordMysqlIndexIoWaitCountDataPoint(now, s.countDelete, metadata.AttributeIoWaitsOperationsDelete, s.name, s.schema, s.index)
-		m.mb.RecordMysqlIndexIoWaitCountDataPoint(now, s.countFetch, metadata.AttributeIoWaitsOperationsFetch, s.name, s.schema, s.index)
-		m.mb.RecordMysqlIndexIoWaitCountDataPoint(now, s.countInsert, metadata.AttributeIoWaitsOperationsInsert, s.name, s.schema, s.index)
-		m.mb.RecordMysqlIndexIoWaitCountDataPoint(now, s.countUpdate, metadata.AttributeIoWaitsOperationsUpdate, s.name, s.schema, s.index)
+// 	for i := 0; i < len(indexIoWaitsStats); i++ {
+// 		s := indexIoWaitsStats[i]
+// 		// counts
+// 		m.mb.RecordMysqlIndexIoWaitCountDataPoint(now, s.countDelete, metadata.AttributeIoWaitsOperationsDelete, s.name, s.schema, s.index)
+// 		m.mb.RecordMysqlIndexIoWaitCountDataPoint(now, s.countFetch, metadata.AttributeIoWaitsOperationsFetch, s.name, s.schema, s.index)
+// 		m.mb.RecordMysqlIndexIoWaitCountDataPoint(now, s.countInsert, metadata.AttributeIoWaitsOperationsInsert, s.name, s.schema, s.index)
+// 		m.mb.RecordMysqlIndexIoWaitCountDataPoint(now, s.countUpdate, metadata.AttributeIoWaitsOperationsUpdate, s.name, s.schema, s.index)
 
-		// times
-		m.mb.RecordMysqlIndexIoWaitTimeDataPoint(
-			now, s.timeDelete/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsDelete, s.name, s.schema, s.index,
-		)
-		m.mb.RecordMysqlIndexIoWaitTimeDataPoint(
-			now, s.timeFetch/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsFetch, s.name, s.schema, s.index,
-		)
-		m.mb.RecordMysqlIndexIoWaitTimeDataPoint(
-			now, s.timeInsert/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsInsert, s.name, s.schema, s.index,
-		)
-		m.mb.RecordMysqlIndexIoWaitTimeDataPoint(
-			now, s.timeUpdate/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsUpdate, s.name, s.schema, s.index,
-		)
-	}
-}
+// 		// times
+// 		m.mb.RecordMysqlIndexIoWaitTimeDataPoint(
+// 			now, s.timeDelete/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsDelete, s.name, s.schema, s.index,
+// 		)
+// 		m.mb.RecordMysqlIndexIoWaitTimeDataPoint(
+// 			now, s.timeFetch/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsFetch, s.name, s.schema, s.index,
+// 		)
+// 		m.mb.RecordMysqlIndexIoWaitTimeDataPoint(
+// 			now, s.timeInsert/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsInsert, s.name, s.schema, s.index,
+// 		)
+// 		m.mb.RecordMysqlIndexIoWaitTimeDataPoint(
+// 			now, s.timeUpdate/picosecondsInNanoseconds, metadata.AttributeIoWaitsOperationsUpdate, s.name, s.schema, s.index,
+// 		)
+// 	}
+// }
 
 func (m *mySQLScraper) scrapeStatementEventsStats(now pcommon.Timestamp, errs *scrapererror.ScrapeErrors) {
 	statementEventsStats, err := m.sqlclient.getStatementEventsStats()

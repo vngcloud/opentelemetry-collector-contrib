@@ -23,6 +23,7 @@ import (
 
 	"github.com/open-telemetry/opentelemetry-collector-contrib/internal/coreinternal/attraction"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/attributesprocessor"
+	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/basicstatsprocessor"
 	remoteobserverprocessor "github.com/open-telemetry/opentelemetry-collector-contrib/processor/remoteobserverprocessor"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/resourceprocessor"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/spanprocessor"
@@ -85,6 +86,14 @@ func TestDefaultProcessors(t *testing.T) {
 		},
 		{
 			processor: "metricstransform",
+		},
+		{
+			processor: "basicstats",
+			getConfigFn: func() component.Config {
+				cfg := procFactories["basicstats"].CreateDefaultConfig().(*basicstatsprocessor.Config)
+				cfg.Stats = []string{"rate"}
+				return cfg
+			},
 		},
 		{
 			processor: "experimental_metricsgeneration",

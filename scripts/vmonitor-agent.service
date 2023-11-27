@@ -1,0 +1,19 @@
+[Unit]
+Description=vmonitor-agent
+Documentation=https://github.com/influxdata/vmonitor-agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/default/vmonitor-agent
+User=vmonitor-agent
+ExecStart=/usr/bin/vmonitor-agent --config /etc/vmonitor-agent/vmonitor-agent.conf
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartForceExitStatus=SIGPIPE
+KillMode=control-group
+LimitMEMLOCK=8M:8M
+
+[Install]
+WantedBy=multi-user.target

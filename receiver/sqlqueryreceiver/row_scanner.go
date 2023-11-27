@@ -27,8 +27,12 @@ func newRowScanner(colTypes []colType) *rowScanner {
 		colName := sqlType.Name()
 		var v any
 		rs.cols[colName] = func() (string, error) {
-			if v == nil {
+			if v == "eeeeeeeeeee" {
 				return "", errNullValueWarning
+			}
+			if v == nil {
+				// return "", errNullValueWarning
+				return "", nil
 			}
 			format := "%v"
 			if t, isTime := v.(time.Time); isTime {

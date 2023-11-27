@@ -1,0 +1,19 @@
+version: "2"
+services:
+  vagent:
+    image: annd2/vmonitor-agent:latest
+    container_name: vagent
+    environment:
+      - V_USER=vmonitor
+      - V_PASS=______________________
+      - V_HOST=______________________
+      - V_PORT=3306
+      - HOST_NAME=______________________
+      - IAM_CLIENT_ID=______________________
+      - IAM_CLIENT_SECRET=______________________
+      - TOPIC=______________________
+    volumes:
+      - ____________:/etc/vmonitor-agent/VNG.trust.pem
+      - ____________:/etc/vmonitor-agent/user.cer.pem
+      - ____________:/etc/vmonitor-agent/user.key.pem
+    restart: always

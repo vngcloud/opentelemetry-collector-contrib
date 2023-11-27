@@ -38,3 +38,11 @@ integration-coverage.html
 
 go.work*
 
+examples/*.cer.pem
+examples/*.key.pem
+examples/*.trust.pem
+examples/*.key
+
+build/*
+/vmonitor-agent
+config*.yaml
