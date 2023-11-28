@@ -1,8 +1,6 @@
 checkleak:
 	docker run -v /home/annd2/Documents/vdb/opentelemetry-collector-contrib-release:/path zricethezav/gitleaks:latest detect --source="/path" --no-git -v
 
-bench:
-	sysbench oltp_read_only --mysql-host=61.28.226.201 --mysql-user=annd2 --mysql-password=password --mysql-port=3306 --mysql-db=hihi --threads=120 --tables=40 --table-size=200000 --range_selects=off --db-ps-mode=disable --report-interval=1 --time=6000 run
 profile:
 	# go tool pprof http://localhost:6060/debug/pprof/heap
 	# go tool pprof http://localhost:6060/debug/pprof/goroutine
@@ -44,14 +42,13 @@ status:
 	systemctl status vmonitor-agent.service
 	# journalctl -xeu vmonitor-agent.service
 release:
-	cp build/dist/vmonitor-agent_nightly_amd64.deb public_release/vmonitor-agent_nightly_amd64.deb
-	cd public_release && gh release delete-asset v1.0.0 vmonitor-agent_nightly_amd64.deb -y
-	cd public_release && gh release upload v1.0.0 vmonitor-agent_nightly_amd64.deb
-	rm public_release/vmonitor-agent_nightly_amd64.deb
+	# gh auth login
+	gh release upload v1.0.0 build/dist/vmonitor-agent_nightly_amd64.deb --clobber --repo https://github.com/vngcloud/opentelemetry-collector-contrib.git
+
 docker: otelcontribcol
-	docker build --tag annd2/vmonitor-agent:latest .
+	docker build --tag vngcloud/vmonitor-agent:latest .
 push:
-	docker push annd2/vmonitor-agent:latest
+	docker push vngcloud/vmonitor-agent:latest
 up:
 	docker compose up -d
 down:
@@ -509,7 +506,6 @@ scp:
 	# scp -R examples/user.key.pem annd2-bench-vdb:/home/stackops/annd2/benchmark/cert
 	# scp -R examples/VNG.trust.pem annd2-bench-vdb:/home/stackops/annd2/benchmark/cert
 	# scp -R bin/otelcontribcol_linux_amd64 vinhph2-test-ebpf:/home/stackops/annd2/otel_log
-annd2: gotidy all
 
 include ./Makefile.Common
 

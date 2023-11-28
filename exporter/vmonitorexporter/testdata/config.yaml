@@ -1,0 +1,9 @@
+vmonitor:
+  endpoint: http://localhost:8080
+  client_id: aaaaaaaaaaaaaaaaaaaaaaaaaaa
+  client_secret: aaaaaaaaaaaaaaaaaaaaaaaaaaa
+  iam_url: https://aaaaaaaaaaaaaaaaaaaaaaaaaaa/iam/accounts-api/v2/auth/token
+
+  hostname: "hosttt"
+  metric_batch_size: 1000
+  metric_buffer_limit: 15000

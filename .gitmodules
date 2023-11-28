@@ -1,0 +1,3 @@
+[submodule "public_release"]
+	path = public_release
+	url = https://github.com/anngdinh/public_release.git
