@@ -6,7 +6,7 @@
 DEFAULT_VERSION=v1.0.0
 DEFAULT_VMONITOR_SITE="monitoring-agent.vngcloud.vn"
 DEFAULT_IAM_URL="https://iamapis.vngcloud.vn/accounts-api/v2/auth/token"
-BASE_URL="https://github.com/vngcloud/vmonitor-metrics-agent/releases/download"
+BASE_URL="https://github.com/vngcloud/opentelemetry-collector-contrib/releases/download"
 
 if [ ! $VERSION ]; then
   printf "\033[31mVERSION environment variable not available.\033[0m\n"
