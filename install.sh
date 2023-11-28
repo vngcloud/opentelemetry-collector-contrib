@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 DEFAULT_VERSION=v1.0.0
-DEFAULT_VMONITOR_SITE="monitoring-agent.vngcloud.vn"
+DEFAULT_VMONITOR_SITE="https://monitoring-agent.vngcloud.vn:443"
 DEFAULT_IAM_URL="https://iamapis.vngcloud.vn/accounts-api/v2/auth/token"
 BASE_URL="https://github.com/vngcloud/opentelemetry-collector-contrib/releases/download"
 
