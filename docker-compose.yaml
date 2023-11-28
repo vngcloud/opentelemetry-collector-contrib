@@ -1,8 +1,9 @@
 version: "2"
 services:
   vagent:
-    image: annd2/vmonitor-agent:latest
+    image: vngcloud/vmonitor-agent:latest
     container_name: vagent
+    network_mode: host
     environment:
       - V_USER=vmonitor
       - V_PASS=______________________

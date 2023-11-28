@@ -23,7 +23,7 @@ func TestCreateDefaultConfig(t *testing.T) {
 func TestFactory_CreateLogsExporter(t *testing.T) {
 	factory := NewFactory()
 	cfg := withDefaultConfig(func(cfg *Config) {
-		cfg.Endpoint = "https://monitoring-agent.vngcloud.vn:443"
+		cfg.Endpoint = DefaultEndpoint
 		cfg.ClientID = "aaaa"
 		cfg.ClientSecret = "bbb"
 	})

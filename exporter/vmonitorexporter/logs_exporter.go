@@ -128,7 +128,7 @@ func (e *vmonitorLogsExporter) log2metric(logs map[string]any, tm time.Time) []M
 			continue
 		}
 		metric := Metric{
-			Name:       fmt.Sprintf("annd2_%s_diff", valueKey),
+			Name:       fmt.Sprintf("mysql.%s_diff", valueKey),
 			Dimensions: make(Dimensions),
 			Value:      -1,
 			Timestamp:  float64(tm.UnixNano() / int64(time.Millisecond)),

@@ -39,6 +39,11 @@ type Logs2Metrics struct {
 
 var _ component.Config = (*Config)(nil)
 
+const (
+	DefaultEndpoint = "https://monitoring-agent.vngcloud.vn:443"
+	DefaultIAMURL   = "https://iamapis.vngcloud.vn/accounts-api/v2/auth/token"
+)
+
 // Validate validates the elasticsearch server configuration.
 func (cfg *Config) Validate() error {
 	if cfg.ClientID == "" || cfg.ClientSecret == "" {
@@ -46,12 +51,12 @@ func (cfg *Config) Validate() error {
 	}
 
 	if cfg.Endpoint == "" {
-		logrus.Warnln("Invalid endpoint, set to default")
-		cfg.Endpoint = "https://monitoring-agent.vngcloud.vn:443"
+		logrus.Warnln("Invalid endpoint, set to default: ", DefaultEndpoint)
+		cfg.Endpoint = DefaultEndpoint
 	}
 	if cfg.IamURL == "" {
-		logrus.Warnln("Invalid iam_url, set to default")
-		cfg.IamURL = "https://iamapis.vngcloud.vn/accounts-api/v2/auth/token"
+		logrus.Warnln("Invalid iam_url, set to default: ", DefaultIAMURL)
+		cfg.IamURL = DefaultIAMURL
 	}
 
 	for i := range cfg.Logs2Metrics.DimensionKeys {

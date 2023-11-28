@@ -33,8 +33,8 @@ func createDefaultConfig() component.Config {
 	return &Config{
 		ClientID:          "",
 		ClientSecret:      "",
-		IamURL:            "https://iamapis.vngcloud.vn/accounts-api/v2/auth/token",
-		Endpoint:          "https://monitoring-agent.vngcloud.vn:443",
+		IamURL:            DefaultEndpoint,
+		Endpoint:          DefaultIAMURL,
 		Hostname:          hostname,
 		MetricBatchSize:   1000,
 		MetricBufferLimit: 15000,
